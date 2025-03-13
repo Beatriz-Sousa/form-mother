@@ -1,6 +1,6 @@
 body {
-    margin: 0; /* Remove margens padrão */
-    padding: 0; /* Remove qualquer espaçamento interno */
+    margin: 0;
+    padding: 0;
     font-family: 'Exo 2', sans-serif;
     color: rgb(68, 68, 68);
     background: rgb(245, 245, 245);
@@ -9,7 +9,7 @@ body {
 .nav {
     background-color: rgb(22, 73, 159);
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     padding: 10px 60px;
 }
@@ -21,25 +21,25 @@ body {
 
 .text1 {
     color: white;
-    font-size: 20px; /* Ajusta o tamanho da fonte */
-    margin-right: 20px; /* Dá um pequeno espaço na direita */
+    font-size: 20px;
+    margin-right: 20px;
 }
 
-.text2{
+.text2 {
     text-align: center;
 }
 
-.formCadastro{
-    max-width: 600px; /* Define uma largura máxima menor */
-    margin: 20px auto; /* Centraliza na tela */
+#formCadastro {
+    max-width: 600px;
+    margin: 20px auto;
     padding: 20px;
-    background: #f8f9fa; /* Fundo leve para destacar */
-    border-radius: 10px; /* Cantos arredondados */
+    background: #f8f9fa;
+    border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 input, textarea {
-    width: 100%; /* Faz os inputs ocuparem toda a largura */
+    width: 100%;
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ccc;
@@ -48,13 +48,13 @@ input, textarea {
 }
 
 fieldset {
-    border: none; /* Remove a borda padrão */
+    border: none;
     margin-bottom: 15px;
 }
 
 button {
     width: 100%;
-    background-color: #16499F; /* Azul do header */
+    background-color: #16499F;
     color: white;
     padding: 10px;
     border: none;
@@ -64,12 +64,16 @@ button {
     transition: background 0.3s ease;
 }
 
+/* #avancar{
+    align-items: center;
+    height: 50px;
+    width: 50px;
+} */
+
 button:hover {
     background-color: #133c80;
 }
 
-
-/* Estilização das abas */
 .tabs {
     display: flex;
     justify-content: space-around;
@@ -85,15 +89,15 @@ button:hover {
     padding: 10px 15px;
     cursor: pointer;
     font-size: 16px;
-    transition: 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .tab-button.active, .tab-button:hover {
     background-color: #133c80;
     border-radius: 5px;
+    transform: scale(1.1);
 }
 
-/* Oculta os conteúdos das abas */
 .tab-content {
     display: none;
     padding: 20px;
@@ -102,7 +106,36 @@ button:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Mostra apenas a aba ativa */
 .tab-content.active {
     display: block;
+}
+
+input:focus, textarea:focus {
+    border-color: #16499F;
+    outline: none;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #888;
+}
+
+@media (max-width: 768px) {
+    .tabs {
+        flex-direction: column;
+    }
+
+    .tab-button {
+        padding: 12px 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    #formCadastro {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .logo {
+        width: 150px;
+    }
 }
