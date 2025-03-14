@@ -1,15 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
+import db from './js/banco.js';
+import cors from 'cors';
 
 const app = express();
-const db = new sqlite3.Database('./campanha.db', (err) => {
-    if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err.message);
-    } else {
-        console.log('Conectado ao banco de dados.');
-    }
-});
+
+app.use(cors());
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +14,8 @@ app.use(bodyParser.json());
 
 // Rota para salvar os dados
 app.post('/salvar', (req, res) => {
+    console.log(req.body);
+
     const {
         nome,
         dataNascimento,

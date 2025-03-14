@@ -24,21 +24,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Aplicando as máscaras nos campos de CPF, CNPJ e CEP
-    document.getElementById('cpfId').addEventListener('input', function(event) {
+    document.getElementById('cpfId').addEventListener('input', function (event) {
         aplicarMascara(event, 'cpf');
     });
 
-    document.getElementById('cnpjId').addEventListener('input', function(event) {
+    document.getElementById('cnpjId').addEventListener('input', function (event) {
         aplicarMascara(event, 'cnpj');
     });
 
-    document.getElementById('cep').addEventListener('input', function(event) {
+    document.getElementById('cep').addEventListener('input', function (event) {
         aplicarMascara(event, 'cep');
     });
-
+    
     // Função para validar o CPF
     function validarCPF(cpf) {
-        const cpfLimpo = cpf.replace(/[^\d]+/g, '');
+        const cpfLimpo = String(cpf).replace(/[^\d]+/g, ''); // Garantir que é uma string
 
         if (cpfLimpo.length !== 11 || /^(\d)\1{10}$/.test(cpfLimpo)) {
             return false;
@@ -63,24 +63,25 @@ document.addEventListener('DOMContentLoaded', function () {
         return cpfLimpo.charAt(9) === digito1 && cpfLimpo.charAt(10) === digito2;
     }
 
+
+    // Função para validar os dados do formulário
     // Função para validar os dados do formulário
     function validarFormulario(form) {
-        const nome = form.nome ? form.nome.value.trim(): '';
+        const nome = form.nome ? form.nome.value.trim() : '';
         const dataNascimento = form.dataNascimento ? form.dataNascimento.value.trim() : '';
-        const cpf = form.cpf ? form.cpf.value.trim(): '';
-        const telefone = form.telefone ? form.telefone.value.trim(): '';
-        const email = form.email ? form.email.value.trim(): '';
-        const logradouro = form.logradouro ? form.logradouro.value.trim(): '';
-        const bairro = form.bairro ? form.bairro.value.trim(): '';
-        const numero = form.numero ? form.numero.value.trim(): '';
-        const cidade = form.cidade ? form.cidade.value.trim(): '';
-        const estado = form.estado ? form.estado.value.trim(): '';
-        const cep = form.cep ? form.cep.value.trim(): '';
-        const numeroNota = form.numeroNota ? form.numeroNota.value.trim(): '';
-        const cnpj = form.cnpj ? form.cnpj.value.trim(): '';
-        const dataCompra = form.dataCompra ? form.dataCompra.value: '';
-        const resposta = form.resposta ? form.resposta.value.trim(): '';
-
+        const cpf = form.cpf ? form.cpf.value.trim() : '';
+        const telefone = form.telefone ? form.telefone.value.trim() : '';
+        const email = form.email ? form.email.value.trim() : '';
+        const logradouro = form.logradouro ? form.logradouro.value.trim() : '';
+        const bairro = form.bairro ? form.bairro.value.trim() : '';
+        const numero = form.numero ? form.numero.value.trim() : '';
+        const cidade = form.cidade ? form.cidade.value.trim() : '';
+        const estado = form.estado ? form.estado.value.trim() : '';
+        const cep = form.cep ? form.cep.value.trim() : '';
+        const numeroNota = form.numeroNota ? form.numeroNota.value.trim() : '';
+        const cnpj = form.cnpj ? form.cnpj.value.trim() : '';
+        const dataCompra = form.dataCompra ? form.dataCompra.value : '';
+        const resposta = form.resposta ? form.resposta.value.trim() : '';
 
         // Validar data de compra (deve estar entre 01/05/2025 e 31/05/2025)
         const dataInicio = new Date('2025-05-01');
@@ -91,8 +92,15 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
 
+        // Remover o console.log desnecessário
         return true;
     }
+    // Valida o CPF
+    if (!validarCPF(cpfId)) {
+        ("CPF inválido.");
+        return false;
+    }
+
 
     // Evento de envio do formulário
     document.getElementById('formCadastro').addEventListener('submit', function (event) {
@@ -107,14 +115,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'POST',
                 body: formData,
             })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);  // Mensagem de sucesso ou erro do backend
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert("Erro ao salvar os dados.");
-            });
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);  // Mensagem de sucesso ou erro do backend
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert("Erro ao salvar os dados.");
+                });
         }
     });
 });
