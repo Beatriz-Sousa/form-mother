@@ -23,43 +23,45 @@
             <!-- Dados do Cliente -->
             <fieldset>
                 <legend>Dados do Cliente</legend>
-                <label for="nome">Nome: <input type="text" id="nome" required></label>
-                <label for="dataDeNascimento">Data de Nascimento: <input type="date" id="dataNascimento" required></label>
-                <label for="cpf">CPF: <input id="cpfId" maxlength="14" autocomplete="off" type="text" placeholder="Digite seu CPF" required></label>
-                <label for="telefone">Telefone: <input type="text" id="telefone" required></label>
-                <label for="email">E-mail: <input type="email" id="email" required></label>
+                <label for="nome">Nome: <input type="text" id="nome" name="nome" required></label>
+                <label for="dataNascimento">Data de Nascimento: <input type="date" id="dataNascimento" name="dataNascimento" required></label>
+                <label for="cpf">CPF: <input id="cpfId" name="cpf" type="text" maxlength="14" autocomplete="off" placeholder="Digite seu CPF" required></label>
+                <label for="telefone">Telefone: <input type="text" id="telefone" name="telefone" required></label>
+                <label for="email">E-mail: <input type="email" id="email" name="email" required></label>
             </fieldset>
 
             <!-- Endereço -->
             <fieldset>
                 <legend>Endereço</legend>
-                <label for="logradouro">Logradouro: <input type="text" id="logradouro" required></label>
-                <label for="bairro">Bairro: <input type="text" id="bairro" required></label>
-                <label for="numero">Número: <input type="text" id="numero" required></label>
-                <label for="cidade">Cidade: <input type="text" id="cidade" required></label>
-                <label for="estado">Estado: <input type="text" id="estado" required></label>
-                <label for="cep">CEP: <input type="text" id="cep" maxlength="8" required></label>
+                <label for="logradouro">Logradouro: <input type="text" id="logradouro" name="logradouro" required></label>
+                <label for="bairro">Bairro: <input type="text" id="bairro" name="bairro" required></label>
+                <label for="numero">Número: <input type="text" id="numero" name="numero" required></label>
+                <label for="cidade">Cidade: <input type="text" id="cidade" name="cidade" required></label>
+                <label for="estado">Estado: <input type="text" id="estado" name="estado" required></label>
+                <label for="cep">CEP: <input type="text" id="cep" name="cep" maxlength="8" required></label>
             </fieldset>
 
             <!-- Dados da Nota -->
             <fieldset>
                 <legend>Dados da Nota</legend>
-                <label for="numeroNota">Nº da Nota: <input type="text" id="numeroNota" required></label>
-                <label for="cnpj">CNPJ da Empresa: <input id="cnpjId" type="text" maxlength="14" required></label>
-                <label for="dataCompra">Data da Compra: <input type="date" id="dataCompra" required></label>
+                <label for="numeroNota">Nº da Nota: <input type="text" id="numeroNota" name="numeroNota" required></label>
+                <label for="cnpj">CNPJ da Empresa: <input id="cnpjId" name="cnpj" type="text" maxlength="14" required></label>
+                <label for="dataCompra">Data da Compra: <input type="date" id="dataCompra" name="dataCompra" required></label>
             </fieldset>
 
             <!-- Pergunta -->
             <fieldset>
                 <legend>Pergunta</legend>
-                <label for="pergunta">Por que sua mãe merece um Império?</label>
-                <textarea id="resposta" required></textarea>
+                <label for="resposta">Por que sua mãe merece um Império?</label>
+                <textarea id="resposta" name="resposta" required></textarea>
             </fieldset>
 
             <button type="submit">Salvar</button>
         </form>
     </div>
 
+    <!-- Referências aos arquivos de script -->
     <script src="js/main.js"></script>
+    <script type="module" src="js/banco.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-const sqlite3 = require('sqlite3').verbose();
+import sqlite3 from 'sqlite3';
+import { Database } from 'sqlite3';
 
 // Abrir o banco de dados (será criado se não existir)
 const db = new sqlite3.Database('./campanha.db', (err) => {

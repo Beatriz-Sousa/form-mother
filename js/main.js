@@ -65,41 +65,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Função para validar os dados do formulário
     function validarFormulario(form) {
-        const nome = form.nome.value.trim();
-        const dataNascimento = form.dataNascimento.value;
-        const cpf = form.cpf.value.trim();
-        const telefone = form.telefone.value.trim();
-        const email = form.email.value.trim();
-        const logradouro = form.logradouro.value.trim();
-        const bairro = form.bairro.value.trim();
-        const numero = form.numero.value.trim();
-        const cidade = form.cidade.value.trim();
-        const estado = form.estado.value.trim();
-        const cep = form.cep.value.trim();
-        const numeroNota = form.numeroNota.value.trim();
-        const cnpj = form.cnpj.value.trim();
-        const dataCompra = form.dataCompra.value;
-        const resposta = form.resposta.value.trim();
-        const valorCompra = parseFloat(form.valorCompra.value.trim());
+        const nome = form.nome ? form.nome.value.trim(): '';
+        const dataNascimento = form.dataNascimento ? form.dataNascimento.value.trim() : '';
+        const cpf = form.cpf ? form.cpf.value.trim(): '';
+        const telefone = form.telefone ? form.telefone.value.trim(): '';
+        const email = form.email ? form.email.value.trim(): '';
+        const logradouro = form.logradouro ? form.logradouro.value.trim(): '';
+        const bairro = form.bairro ? form.bairro.value.trim(): '';
+        const numero = form.numero ? form.numero.value.trim(): '';
+        const cidade = form.cidade ? form.cidade.value.trim(): '';
+        const estado = form.estado ? form.estado.value.trim(): '';
+        const cep = form.cep ? form.cep.value.trim(): '';
+        const numeroNota = form.numeroNota ? form.numeroNota.value.trim(): '';
+        const cnpj = form.cnpj ? form.cnpj.value.trim(): '';
+        const dataCompra = form.dataCompra ? form.dataCompra.value: '';
+        const resposta = form.resposta ? form.resposta.value.trim(): '';
 
-        // Validar CPF
-        if (!validarCPF(cpf)) {
-            alert("CPF inválido!");
-            return false;
-        }
 
         // Validar data de compra (deve estar entre 01/05/2025 e 31/05/2025)
         const dataInicio = new Date('2025-05-01');
         const dataFim = new Date('2025-05-31');
-        const dataDeCompra = new Date(dataDeCompra);
+        const dataDeCompra = new Date(dataCompra);
         if (dataDeCompra < dataInicio || dataDeCompra > dataFim) {
             alert("A data da compra deve estar entre 01/05/2025 e 31/05/2025.");
-            return false;
-        }
-
-        // Validar valor de compra (deve ser maior que R$100,00)
-        if (valorCompra <= 100) {
-            alert("O valor da compra deve ser superior a R$100,00.");
             return false;
         }
 

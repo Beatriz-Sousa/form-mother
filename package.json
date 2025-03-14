@@ -18,8 +18,10 @@
   "homepage": "https://github.com/Beatriz-Sousa/form-mother#readme",
   "description": "",
   "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
-  }, 
+  },
   "type": "module"
 }
