@@ -11,17 +11,20 @@ const db = new sqlite3.Database('./campanha.db', (err) => {
 
 // Criar as tabelas
 db.serialize(() => {
-    // Tabela de Cliente
+    // Ativar chave estrangeira no SQLite
+    db.run("PRAGMA foreign_keys = ON;");
+
+    // Tabela Cliente
     db.run(`CREATE TABLE IF NOT EXISTS cliente (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
         data_nascimento TEXT NOT NULL,
-        cpf TEXT NOT NULL UNIQUE,
+        cpf TEXT NOT NULL,
         telefone TEXT NOT NULL,
         email TEXT NOT NULL
     )`);
 
-    // Tabela de Endereço
+    // Tabela Endereço
     db.run(`CREATE TABLE IF NOT EXISTS endereco (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         cliente_id INTEGER NOT NULL,
@@ -31,26 +34,24 @@ db.serialize(() => {
         cidade TEXT NOT NULL,
         estado TEXT NOT NULL,
         cep TEXT NOT NULL,
-        FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+        FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE
     )`);
 
-    // Tabela de Nota
+    // Tabela Nota Fiscal
     db.run(`CREATE TABLE IF NOT EXISTS nota (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         cliente_id INTEGER NOT NULL,
-        numero_nota TEXT NOT NULL,
+        numero_nota TEXT NOT NULL UNIQUE,
         cnpj_empresa TEXT NOT NULL,
         data_compra TEXT NOT NULL,
-        valor_compra REAL NOT NULL,
-        FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+        FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE
     )`);
 
-    // Tabela de Pergunta (1:1)
     db.run(`CREATE TABLE IF NOT EXISTS pergunta (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         cliente_id INTEGER NOT NULL,
         resposta TEXT NOT NULL,
-        FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+        FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE
     )`);
 });
 
