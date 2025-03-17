@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let input = event.target;
         let value = input.value.replace(/\D/g, ''); // Remove tudo que não for número
 
-        if (tipo === 'cpfId') {
+        if (tipo === 'cpf') {
             // Máscara para CPF
             if (value.length <= 11) {
-                value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
+                value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
             }
         } else if (tipo === 'cnpj') {
             // Máscara para CNPJ
@@ -23,11 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
         input.value = value;
     }
 
-    // Verificar se o elemento existe antes de adicionar o listener
+    // Adicionando listeners de máscara
     const cpfInput = document.getElementById('cpfId');
     if (cpfInput) {
         cpfInput.addEventListener('input', function (event) {
-            aplicarMascara(event, 'cpfId');
+            aplicarMascara(event, 'cpf');
         });
     }
 
@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Função para validar o CPF
-    function validarCPF(cpfId) {
-        const cpfLimpo = String(cpfId).replace(/[^\d]+/g, ''); // Remover tudo o que não for número
+    function validarCPF(cpf) {
+        const cpfLimpo = cpf.replace(/\D/g, ''); // Remove caracteres não numéricos
 
         if (cpfLimpo.length !== 11 || /^(\d)\1{10}$/.test(cpfLimpo)) {
-            return false; // CPF inválido se tiver 11 dígitos e todos forem iguais (ex: 111.111.111-11)
+            return false; // CPF inválido se for uma sequência repetida (ex: 111.111.111-11)
         }
 
         let soma = 0;
@@ -72,79 +72,57 @@ document.addEventListener('DOMContentLoaded', function () {
         let digito2 = (resto < 2) ? 0 : 11 - resto;
 
         // Verificar se os dois últimos dígitos correspondem aos calculados
-        return cpfLimpo.charAt(9) === String(digito1) && cpfLimpo.charAt(10) === String(digito2);
+        return cpfLimpo.charAt(9) == digito1 && cpfLimpo.charAt(10) == digito2;
     }
 
+    // Captura o formulário
+    const formCadastro = document.getElementById('formCadastro');
 
-    // Função para validar os dados do formulário
-    function validarFormulario(form) {
-        const nome = form.nome ? form.nome.value.trim() : '';
-        const dataNascimento = form.dataNascimento ? form.dataNascimento.value.trim() : '';
-        const cpf = form.cpf ? form.cpf.value.trim() : '';
-        const telefone = form.telefone ? form.telefone.value.trim() : '';
-        const email = form.email ? form.email.value.trim() : '';
-        const logradouro = form.logradouro ? form.logradouro.value.trim() : '';
-        const bairro = form.bairro ? form.bairro.value.trim() : '';
-        const numero = form.numero ? form.numero.value.trim() : '';
-        const cidade = form.cidade ? form.cidade.value.trim() : '';
-        const estado = form.estado ? form.estado.value.trim() : '';
-        const cep = form.cep ? form.cep.value.trim() : '';
-        const numeroNota = form.numeroNota ? form.numeroNota.value.trim() : '';
-        const cnpj = form.cnpj ? form.cnpj.value.trim() : '';
-        const dataCompra = form.dataCompra ? form.dataCompra.value : '';
-        const resposta = form.resposta ? form.resposta.value.trim() : '';
+    if (formCadastro) {
+        // Evento de envio do formulário
+        formCadastro.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        // Validar data de compra (deve estar entre 01/05/2025 e 31/05/2025)
-        const dataInicio = new Date('2025-05-01');
-        const dataFim = new Date('2025-05-31');
-        const dataDeCompra = new Date(dataCompra);
-        if (dataDeCompra < dataInicio || dataDeCompra > dataFim) {
-            alert("A data da compra deve estar entre 01/05/2025 e 31/05/2025.");
-            return false;
-        }
+            // Validação do CPF antes de enviar
+            const cpfValor = document.getElementById('cpfId').value;
+            if (!validarCPF(cpfValor)) {
+                alert('CPF inválido! Por favor, insira um CPF válido.');
+                return;
+            }
 
-        // Valida o CPF
-        if (!validarCPF(cpf)) {
-            alert("CPF inválido.");
-            return false;
-        }
+            // Captura os dados do formulário
+            const formData = new FormData(formCadastro);
+            const jsonData = {};
 
-        return true;
-    }
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
 
-    // Evento de envio do formulário
-    formCadastro.addEventListener('submit', function (event) {
-        event.preventDefault();
-    
-        const formData = new FormData(formCadastro);
-        const jsonData = {};
-    
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
+            // Envia os dados para o backend
+            fetch('http://localhost:3000/salvar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jsonData) // Converte FormData para JSON
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        // Se a resposta não for OK (erro 400 ou 500), retorna a mensagem de erro do backend
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.erro || "Erro no servidor");
+                        });
+                    }
+                    return response.json(); // Caso contrário, retorna o JSON normal
+                })
+                .then(data => {
+                    // Sucesso, exibe a mensagem de sucesso
+                    alert(data.mensagem || "Cadastro realizado com sucesso!");
+                    formCadastro.reset(); // Limpa o formulário após o envio
+                })
+                .catch(error => {
+                    // Exibe a mensagem de erro
+                    console.error("Erro:", error.message);
+                    alert(error.message); // Exibe o erro no alert ou pode ser adicionado à UI
+                });
         });
-    
-        fetch('http://localhost:3000/salvar', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(jsonData) // Converte FormData para JSON
-        })
-            .then(response => {
-                if (!response.ok) {
-                    // Se a resposta não for ok (erro 400 ou 500), joga um erro com a mensagem do backend
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.erro || "Erro no servidor");
-                    });
-                }
-                return response.json(); // Caso contrário, retorne o JSON normal
-            })
-            .then(data => {
-                // Sucesso, exibe a mensagem de sucesso
-                alert(data.mensagem || "Cadastro realizado com sucesso!");
-            })
-            .catch(error => {
-                // Exibe a mensagem de erro
-                console.error("Erro:", error.message);
-                alert(error.message); // Exibe o erro em um alert ou você pode adicionar um componente de erro na UI
-            });             
-    });    
+    }
 });
